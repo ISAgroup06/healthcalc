@@ -3,7 +3,7 @@ Bienvenido al proyecto de la asignatura de **Ingeniería del Software Avanzada**
 
 El [Hospital Universitario Virgen de la Victoria (El Clínico)](https://www.sspa.juntadeandalucia.es/servicioandaluzdesalud/hospital/virgen-victoria/) de Málaga nos ha encargado el desarrollo de una **Calculadora de Salud** (**_HealthCalc_**) que permita calcular diferentes métricas de los pacientes.
 
-![MOdelo de características de la calculadora de salud.](resources/images/healthcalc_fm.png)
+![Modelo de características de la calculadora de salud.](resources/images/healthcalc_fm.png)
 
 ## Requisitos  
 
@@ -338,5 +338,213 @@ Para cada categoría y género, probamos valores que están justo en el límite 
 - Ejecutar la aplicación: Clic en Run usando el IDE.
 - Ejecutar los tests: Clic en Run Tests usando el IDE o con Maven: `mvn test`
 - Ejecutar los tests con informe de cobertura (previamente configurado en pom.xml): `mvn test`
+</details>
+
+</details>
+
+
+## Especificaciones
+
+### Casos de uso
+Diagrama de casos de uso de las funcionalidades de HealthCalc
+
+![Diagrama de Casos de Uso](doc/p2/diagrama_casos_uso.png)
+
+<summary><b>Documentación</b></summary>
+  
+* [Especificación: Cálculo del Índice de masa corporal (IMC) (CU-01)](doc/p2/especification_imc.txt)
+* [Especificación: Cálculo del Perímetro Abdominal (WC) (CU-02)](doc/p2/especification_wc.txt)
+* [Especificación: Peso Corporal Ideal - Lorentz (CU-03)](doc/p2/especificacion_ibw.txt)
+
+## Behaviour Driven Development (BDD)
+
+En esta sección se detallan las historias de usuario y los escenarios de prueba implementadas para la calculadora de salud, utilizando Gherkin para definir los comportamientos esperados.
+
+<details>
+<summary><b>Índice de Masa Corporal (BMI)</b></summary>
+  
+* **Historia de Usuario:** Como usuario de la calculadora de la salud, quiero calcular el BMI para obtener mi indicador de estado nutricional.
+* **Escenarios:**
+    * Cálculo exitoso del valor de BMI 
+    * Cálculo del BMI en límites biológicos permitidos
+    * Intento de cálculo del BMI con datos biológicamente imposibles
+
+* **Enlace al fichero:** [BMI.feature](./java-project-healthcalc/src/test/resources/features/BMI.feature)
+</details>   
+
+<details>
+<summary><b>Clasificación completa del Índice de Masa Corporal (Full BMI)</b></summary>
+  
+* **Historia de Usuario:** Como usuario de la calculadora de la salud, quiero obtener mi categoría de peso para conocer mi estado nutricional.
+* **Escenarios:**
+    * Categorización exitosa en todos los rangos
+    * Verificación de los límites de las categorías
+    * Intento de clasificación con valores para BMI fuera de rango biológico (0,150)
+
+* **Enlace al fichero:** [fullBMI.feature](./java-project-healthcalc/src/test/resources/features/fullBMI.feature)
+</details>  
+<details>
+<summary><b>Perímetro Abdominal (WC)</b></summary>
+  
+* **Historia de Usuario:** Como usuario de la calculadora de la salud, quiero clasificar el perímetro abdominal para obtener información sobre mi riesgo cardiovascular.
+* **Escenarios:**
+    * Verificación de clasificaciones exitosas 
+    * Perímetro en el límite inferior para hombres
+    * Perímetro en el límite inferior para mujeres
+    * Intento de clasificación con datos biológicamente imposibles
+
+* **Enlace al fichero:** [WC.feature](./java-project-healthcalc/src/test/resources/features/WC.feature)
+</details>    
+<details>
+<summary><b>Peso Corporal Ideal (IBW)</b></summary>
+  
+* **Historia de Usuario:** Como usuario de la calculadora de la salud, quiero calcular mi peso ideal según mi altura y género.
+* **Escenarios:**
+    * Cálculo exitoso del peso ideal para hombres y mujeres
+    * Cálculo del IBW en límites biológicos permitidos
+    * Cálculo con altura fuera de rango
+    * Cálculo con género inválido
+
+* **Enlace al fichero:** [IBW.feature](./java-project-healthcalc/src/test/resources/features/IBW.feature)
+</details>  
+
+## Interfaz Gráfica de Usuario (GUI)
+<details>
+<summary><b>Captura de la interfaz Panel Información</b></summary>
+
+![Captura de la interfaz (1)](doc/p4/1.PanelInfo.png)
+
+</details> 
+<details>
+<summary><b>Captura de la interfaz Panel IMC</b></summary>
+
+![Captura de la interfaz (2)](doc/p4/2.PanelIMC.png)
+</details> 
+
+<details>
+<summary><b>Captura de la interfaz Panel IBW</b></summary>
+
+![Captura de la interfaz (3)](doc/p4/3.PanelIBW.png)
+</details> 
+
+<details>
+<summary><b>Captura de la interfaz Panel WC</b></summary>
+
+![Captura de la interfaz (4)](doc/p4/4.PanelWC.png)
+</details> 
+
+## Patrones de Diseño
+
+<details>
+<summary><b>Patrón Singular (Singleton)</b></summary>
+
+Se ha aplicado el patrón Singleton a la clase 'HealthCalcImpl'. Esto garantiza que solo exista una única instancia de la calculadora en toda la aplicación, centralizando la lógica y optimizando el uso de recursos.
+
+![Captura del patrón (1)](design_patterns/PatronSingularUML.png)
+
+</details> 
+
+<details>
+<summary><b>Patrón Adaptador (Adapter) - Punto 3.a</b></summary>
+
+Se ha implementado el patrón Adapter para permitir la integración de nuestra calculadora con el sistema del Hospital Costa del Sol. 
+
+* **Funcionalidad:** El adaptador traduce las unidades de medida del hospital (metros y gramos) a las unidades internas de la calculadora (centímetros y kilogramos).
+* **Interoperabilidad:** Permite que la calculadora sea utilizada por sistemas externos con interfaces diferentes sin modificar el código original.
+
+![Captura del patrón (2)](design_patterns/3a_adapter.png)
+
+</details>
+
+<details>
+<summary><b>Patrón Proxy (Estadísticas) - Punto 3.b</b></summary>
+
+Se ha implementado un Proxy para interceptar las llamadas a la calculadora y generar estadísticas de uso de forma transparente.
+
+* **Funcionalidad:** Registra los datos de cada cálculo (peso, altura, IMC) de forma anónima en una lista interna.
+* **Estadísticas:** A través de la interfaz `HealthStats`, permite obtener medias de los valores y conteos por género.
+* **Ventaja:** Añade funcionalidades de registro y análisis sin alterar el código base de la calculadora original.
+
+![Captura del patrón (3)](design_patterns/3b_proxy.png)
+
+</details>
+<details>
+<summary><b>Patrón Decorador (Decorator) - Punto 3.c</b></summary>
+
+Se ha implementado el patrón Decorator para añadir soporte a diferentes sistemas métricos y generar mensajes personalizados en diferentes idiomas de forma dinámica.
+
+* **Funcionalidad (Zonas):** Adapta las entradas de la calculadora según la región, permitiendo utilizar el sistema americano (pies y libras) o el sistema métrico (metros y gramos).
+* **Funcionalidad (Idiomas):** Permite mprimir automáticamente por consola el resultado del cálculo del IMC en español e inglés.
+* **Ventaja:** Se pueden encadenar los decoradores, es decir, es posible crear múltiples combinaciones sin necesidad de modificar el código base del adaptador ni crear una jerarquía de clases compleja.
+
+![Captura del patrón (4)](design_patterns/3c_decorator.png)
+
+</details>
+
+## Refactorings
+<details>
+<summary><b>REFACTORING 1: Creación de Person, Gender y BMICategory</b></summary>
+
+* **(1) Problema / Bad smell:** Obsesión por los tipos primitivos (Primitive Obsession) y lista de parámetros larga (Long Parameter List). Los métodos actuales usan parámetros sueltos (double weight, char gender, etc.) y Strings/chars directamente, lo cual es frágil.
+* **(2) Refactorings aplicados:** * Introduce Parameter Object (para crear la interfaz Person).
+  * Replace Type Code with Class/Enum (para crear Gender y BMICategory).
+* **(3) Tipo/categoría del refactoring:** Class refactoring.
+* **(4) Breve descripción:** Se han creado la interfaz `Person` y los enumerados `Gender` y `BMICategory` para encapsular los datos de los pacientes y tipificar de forma segura las respuestas. Esto prepara el dominio para poder aplicar la segregación de interfaces solicitada en el rediseño.
+* **(5) Cambios manuales:** Creación manual de 3 nuevos archivos/clases (Person.java, Gender.java y BMICategory.java). Ningún código existente fue modificado aún.
+
+</details>
+
+<details>
+<summary><b>REFACTORING 2: Segregación de la interfaz HealthCalc</b></summary>
+
+* **(1) Problema / Bad smell:** Clases 'Dios' con demasiadas responsabilidades. La interfaz original HealthCalc agrupa cálculos completamente distintos (IMC, peso ideal, circunferencia), violando la cohesión y siendo propensa a cambiar por múltiples razones ("Cambios divergentes").
+* **(2) Refactorings aplicados:** * "Extract Class": Se ha extraído la responsabilidad de la interfaz global hacia tres nuevas interfaces segregadas (BasalMetabolicIndex, IdealBodyWeight, OtraMetrica).
+* **(3) Tipo/categoría del refactoring:** Class refactoring.
+* **(4) Breve descripción:** Se han creado las interfaces segregadas según el diagrama UML para "Mejorar distribución de responsabilidades". De este modo, se elimina la interfaz "Dios", permitiendo que los módulos dependan solo de las métricas que realmente utilizan.
+* **(5) Cambios manuales:** Creación manual de 3 nuevos archivos/interfaces (BasalMetabolicIndex.java, IdealBodyWeight.java y OtraMetrica.java). El código existente permanece intacto para mantener compatibilidad en esta iteración.
+
+</details>
+
+<details>
+<summary><b>REFACTORING 3: Soporte de nuevas interfaces en HealthCalcImpl</b></summary>
+
+* **(1) Problema / Bad smell:** "Primitive obsession (uso excesivo de tipos primitivos en vez de objetos)" en la implementación principal y riesgo de "Código duplicado" al integrar las nuevas interfaces segregadas.
+* **(2) Refactorings aplicados:** * "Introduce Parameter Object": Se implementan los métodos que reciben el objeto 'Person' en `HealthCalcImpl`. Para prevenir el código duplicado, estos nuevos métodos actúan como adaptadores internos que delegan la lógica a los métodos que usan primitivos.
+* **(3) Tipo/categoría del refactoring:** Method refactoring.
+* **(4) Breve descripción:** Se ha modificado 'HealthCalcImpl' para que implemente las nuevas interfaces manteniendo la antigua. Se han implementado los métodos usando el objeto 'Person' que delegan en los métodos antiguos, logrando "Mantener código limpio, modular y fácil de extender" sin romper las dependencias actuales del Adapter o del Proxy.
+* **(5) Cambios manuales:** Modificada 1 clase ('HealthCalcImpl.java'): se alteró la firma de la clase para implementar 3 interfaces nuevas y se añadieron 4 métodos nuevos.
+
+</details>
+
+<details>
+<summary><b>REFACTORING 4: Migración de HealthHospitalAdapter</b></summary>
+
+* **(1) Problema / Bad smell:** "Primitive obsession (uso excesivo de tipos primitivos en vez de objetos)" en el envío de datos desde el Adapter hacia el modelo. Además, el Adapter dependía de la interfaz original 'HealthCalc', manteniéndose acoplado a una de las "Clases 'Dios' con demasiadas responsabilidades".
+* **(2) Refactorings aplicados:** * "Introduce Parameter Object": Se ha creado la clase concreta 'PersonImpl' y se instancia en el Adapter para pasar un único objeto al modelo.
+* **(3) Tipo/categoría del refactoring:** Class refactoring / Method refactoring.
+* **(4) Breve descripción:** Se actualizó el 'HealthHospitalAdapter' para que dependa de las nuevas interfaces segregadas ('BasalMetabolicIndex' e 'IdealBodyWeight') en lugar de 'HealthCalc'. Se instancian objetos 'PersonImpl' para realizar las llamadas. Esto permite "Minimizar dependencias entre clases" y "Mejorar distribución de responsabilidades".
+* **(5) Cambios manuales:** Creación manual de 1 clase ('PersonImpl.java'). Modificación de 1 clase existente ('HealthHospitalAdapter.java') para reescribir sus constructores y las llamadas a los métodos.
+
+</details>
+
+<details>
+<summary><b>REFACTORING 5: Migración de HealthStatsProxy</b></summary>
+
+* **(1) Problema / Bad smell:** "Primitive obsession (uso excesivo de tipos primitivos en vez de objetos)" en el Proxy. Además, la clase actuaba sobre una de las "Clases 'Dios' con demasiadas responsabilidades", acoplando la recolección de estadísticas a una interfaz gigante.
+* **(2) Refactorings aplicados:** * "Introduce Parameter Object": Se implementan los métodos de las nuevas interfaces usando el objeto 'Person'. Los nuevos métodos delegan en los antiguos del propio Proxy para asegurar que las estadísticas se guarden y no generar "Código duplicado".
+* **(3) Tipo/categoría del refactoring:** Method refactoring.
+* **(4) Breve descripción:** Se modificó 'HealthStatsProxy' para implementar las interfaces segregadas. Se utilizaron los objetos en lugar de los primitivos para "Mejorar distribución de responsabilidades", reutilizando la lógica de intercepción ya existente para "Mantener código limpio, modular y fácil de extender".
+* **(5) Cambios manuales:** Modificación manual de 1 clase ('HealthStatsProxy.java') para alterar su firma (implementar 3 nuevas interfaces) y añadir 4 métodos nuevos.
+
+</details>
+
+<details>
+<summary><b>REFACTORING 6: Migración completa de la métrica WC</b></summary>
+
+* **(1) Problema / Bad smell:** "Primitive obsession" y "Feature envy". El cálculo del WC seguía dependiendo de tipos primitivos y de HealthCalc, debido a que la interfaz Person carecía del atributo de la cintura.
+* **(2) Refactorings aplicados:** * "Introduce Parameter Object" (Ampliación): Se añadió el atributo waist a person.
+* **(3) Tipo/categoría del refactoring:** Class refactoring / Method refactoring.
+* **(4) Breve descripción:** Se actualizó la interfaz person con la información del perímetro. La interfaz OtraMetrica ahora procesa el WC.
+* **(5) Cambios manuales:** Modificación de 9 clases. Se amplió Person y PersonImpl con el perímetro. Se adaptó OtraMetrica.java. En HealthCalcImpl y Proxy se borraron los métodos antiguos. Finalmente, se actualizaron los controladores.
 
 </details>

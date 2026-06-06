@@ -11,6 +11,8 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 
 import healthcalc.exceptions.InvalidHealthDataException;
+import healthcalc.model.HealthCalc;
+import healthcalc.model.HealthCalcImpl;
 
 /**
  * Tests for the HealthCalc interface regarding the Ideal Body Weight (IBW).
@@ -24,7 +26,7 @@ public class IBWTest {
 
     @BeforeEach
     void setUp() {
-        healthCalc = new HealthCalcImpl();
+        healthCalc =  HealthCalcImpl.getInstance();
     }
 
     @Nested
