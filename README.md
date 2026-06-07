@@ -548,3 +548,14 @@ Se ha implementado el patrón Decorator para añadir soporte a diferentes sistem
 * **(5) Cambios manuales:** Modificación de 9 clases. Se amplió Person y PersonImpl con el perímetro. Se adaptó OtraMetrica.java. En HealthCalcImpl y Proxy se borraron los métodos antiguos. Finalmente, se actualizaron los controladores.
 
 </details>
+
+## Práctica 8: Nuevo Proyecto HealthCalc
+
+El objetivo de esta práctica ha sido la consolidación del proyecto **HealthCalc**, integrando el trabajo desarrollado en las prácticas anteriores para el Hospital Universitario Virgen del Rocío de Sevilla. Tras analizar la calculadora de salud desarrollada previamente, se ha realizado un proceso de unificación del código en la rama `main` del repositorio, garantizando una estructura limpia y preparada para su despliegue web.
+
+Para asegurar una gestión ágil y profesional, se ha implementado la metodología **Kanban** en GitHub Projects, donde se han definido hitos (*milestones*) específicos para el desarrollo web, los patrones de diseño aplicados y las tareas finales de refactorización y despliegue.
+
+### Planificación y Seguimiento
+A continuación, se muestra el estado actual del tablero Kanban del proyecto, que refleja la distribución de las 32 tareas definidas y su seguimiento:
+
+![Tablero Kanban](doc/p8/tableroKanban.png)
